@@ -1,0 +1,39 @@
+# executar doker compose 
+# docker-compose up -d
+
+# pgadmin
+#http://localhost:16543
+#hostname teste-postgres-compose
+#user postgres
+#pass postgres
+
+
+version: '3'
+
+services:
+  postgres-compose:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/paulo/docker/PostgreSQL:/var/lib/postgresql/data
+    networks:
+      - postgres-compose-network
+      
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pcnandes@yahoo.com.br"
+      PGADMIN_DEFAULT_PASSWORD: "postgres"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres-compose
+    networks:
+      - postgres-compose-network
+
+networks: 
+  postgres-compose-network:
+    driver: bridge
